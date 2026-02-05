@@ -1,15 +1,20 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using WSE.Domain;
+using System.Windows.Input;
 
-namespace WSE.StudentApp.ViewModels;
-
-public class CoursesViewModel
-{
-    public ObservableCollection<Course> Courses { get; set; } = new();
-
-    public void LoadMockData()
-    {
-        Courses.Add(new Course { Title = "Algebra I", Description = "Basics of linear equations." });
-        Courses.Add(new Course { Title = "Calculus II", Description = "Integration and series." });
+namespace WSE.StudentApp.ViewModels {
+    public class CourseDto {
+        public string Id { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string PriceText => Price <= 0 ? "Free" : $"${Price:F2}";
+        public ICommand OpenCommand { get; set; }
+    }
+    public class CoursesViewModel : ObservableObject {
+        public ObservableCollection<CourseDto> Courses { get; } = new();
+        public CoursesViewModel() {
+            Courses.Add(new CourseDto { Id = "math101", Title = "Calculus I", Price = 0, OpenCommand = new RelayCommand(() => {}) });
+        }
     }
 }
